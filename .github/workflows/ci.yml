@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 jobs:
   scan_ruby:
@@ -19,8 +19,11 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Fix Brakeman permissions
+        run: chmod +x bin/brakeman
+
       - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+        run: bundle exec bin/brakeman --no-pager
 
   lint:
     runs-on: ubuntu-latest
@@ -34,8 +37,11 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Fix RuboCop permissions
+        run: chmod +x bin/rubocop
+
       - name: Lint code for consistent style
-        run: bin/rubocop -f github
+        run: bundle exec bin/rubocop -f github
 
   test:
     runs-on: ubuntu-latest
@@ -50,14 +56,8 @@ jobs:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
 
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
-      - name: Install packages
+      - name: Install required packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config
 
       - name: Checkout code
@@ -69,9 +69,20 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Fix Rails permissions
+        run: chmod +x bin/rails
+
+      - name: Ensure binstubs exist
+        run: bundle binstubs rails --force
+
+      - name: Prepare the test database
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+        run: bundle exec rails db:test:prepare
+
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test
+        run: bundle exec rails test
