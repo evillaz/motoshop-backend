@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  factura: MyString
+  modelo: MyString
+  marca: MyString
+  color: MyString
+  numero_de_chasis: MyString
+  numero_de_motor: MyString
+  dua: MyString
+  anio: 1
+
+two:
+  factura: MyString
+  modelo: MyString
+  marca: MyString
+  color: MyString
+  numero_de_chasis: MyString
+  numero_de_motor: MyString
+  dua: MyString
+  anio: 1
