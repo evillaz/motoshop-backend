@@ -1,8 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*' # Change this to restrict access to specific domains
-    resource '*', 
-      headers: :any, 
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+    origins '*' 
+    resource '/api/v1/*', headers: :any, methods: [:get, :post, :patch, :put, :delete]
   end
 end

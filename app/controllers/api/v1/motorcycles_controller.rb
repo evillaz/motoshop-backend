@@ -1,4 +1,4 @@
-class MotorcyclesController < ApplicationController
+class Api::V1::MotorcyclesController < ApplicationController
   def index
     motorcycles = Motorcycle.all
     render json: motorcycles
@@ -16,6 +16,14 @@ class MotorcyclesController < ApplicationController
     else
       render json: motorcycle.errors, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    motorcycle = Motorcycle.find_by(factura: params[:id])
+    motorcycle.destroy # Delete the record
+    render json: { message: 'Motorcycle deleted successfully' }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'Motorcycle not found' }, status: :not_found
   end
 
   private
