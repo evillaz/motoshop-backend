@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
-      resources :motorcycles, only: [:index, :show, :create, :update, :destroy]
+      resources :motorcycles
+      resources :customers
     end
   end
 end
