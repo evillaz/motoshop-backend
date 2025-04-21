@@ -9,7 +9,7 @@ class CreateMotorcycles < ActiveRecord::Migration[8.0]
       t.string :numero_de_motor
       t.string :dua
       t.integer :anio
-
+      
       t.timestamps
     end
   end
