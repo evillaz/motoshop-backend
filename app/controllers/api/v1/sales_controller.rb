@@ -42,6 +42,14 @@ class Api::V1::SalesController < ApplicationController
     end
   end
 
+  def update_boleta
+    if @sale.update(boleta: params[:boleta])
+      render json: @sale
+    else
+      render json: @sale.errors, status: :unprocessable_entity
+    end
+  end
+
   # DELETE /sales/:id
   def destroy
     @sale.destroy
@@ -52,7 +60,7 @@ class Api::V1::SalesController < ApplicationController
 
   # Set sale by finding it by factura (to match the Motorcycle relationship)
   def set_sale
-    @sale = Sale.find_by(factura: params[:id])
+    @sale = Sale.find(params[:id])
   end
 
   # Strong parameters for sale creation and updating

@@ -11,7 +11,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :motorcycles
       resources :customers
-      resources :sales
+      resources :sales do
+        member do
+          patch :update_boleta
+        end
+      end
     end
   end
 end
