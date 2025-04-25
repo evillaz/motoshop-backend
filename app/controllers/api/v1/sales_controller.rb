@@ -1,5 +1,5 @@
 class Api::V1::SalesController < ApplicationController
-  before_action :set_sale, only: [:show, :update, :destroy]
+  before_action :set_sale, only: [:show, :update, :destroy, :update_boleta]
 
   # GET /sales
   def index
