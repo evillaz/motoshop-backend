@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_11_195055) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_01_234557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,6 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_11_195055) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "sale_id"
+    t.index ["dni"], name: "index_customers_on_dni", unique: true
     t.index ["sale_id"], name: "index_customers_on_sale_id"
   end
 
@@ -41,16 +42,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_11_195055) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "sale_id"
+    t.date "fecha_emision"
+    t.decimal "importe", precision: 10, scale: 2
     t.index ["sale_id"], name: "index_motorcycles_on_sale_id"
   end
 
   create_table "payments", force: :cascade do |t|
+    t.integer "transaction_number"
     t.decimal "amount", precision: 10, scale: 2
     t.string "method"
     t.bigint "sale_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sale_id"], name: "index_payments_on_sale_id"
+  end
+
+  create_table "placas", force: :cascade do |t|
+    t.string "codigo"
+    t.string "placa"
+    t.decimal "monto", precision: 10, scale: 2, default: "66.8"
+    t.bigint "sale_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_placas_on_sale_id"
   end
 
   create_table "sales", force: :cascade do |t|
@@ -60,11 +74,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_11_195055) do
     t.string "boleta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "titulo_id"
+    t.bigint "placa_id"
     t.index ["dni"], name: "index_sales_on_dni"
     t.index ["factura"], name: "index_sales_on_factura"
+    t.index ["placa_id"], name: "index_sales_on_placa_id"
+    t.index ["titulo_id"], name: "index_sales_on_titulo_id"
+  end
+
+  create_table "titulos", force: :cascade do |t|
+    t.integer "numero_titulo"
+    t.string "codigo"
+    t.bigint "sale_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_titulos_on_sale_id"
   end
 
   add_foreign_key "customers", "sales"
   add_foreign_key "motorcycles", "sales"
   add_foreign_key "payments", "sales"
+  add_foreign_key "placas", "sales"
+  add_foreign_key "sales", "placas"
+  add_foreign_key "sales", "titulos"
+  add_foreign_key "titulos", "sales"
 end

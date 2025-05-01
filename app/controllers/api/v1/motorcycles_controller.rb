@@ -28,7 +28,7 @@ class Api::V1::MotorcyclesController < ApplicationController
 
   private
   def motorcycle_params
-    params.require(:motorcycle).permit(:factura, :modelo, :marca, :color, :numero_de_chasis, :numero_de_motor, :dua, :anio)
+    params.require(:motorcycle).permit(:factura, :modelo, :marca, :color, :numero_de_chasis, :numero_de_motor, :dua, :anio, :fecha_emision, :importe)
   end
 end
 

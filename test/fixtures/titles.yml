@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title_number: 1
+  code: MyString
+  sale: one
+
+two:
+  title_number: 1
+  code: MyString
+  sale: two
