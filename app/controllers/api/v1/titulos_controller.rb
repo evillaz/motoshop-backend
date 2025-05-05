@@ -1,0 +1,2 @@
+class TitulosController < ApplicationController
+end

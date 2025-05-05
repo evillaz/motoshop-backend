@@ -3,7 +3,7 @@ class Api::V1::SalesController < ApplicationController
 
   # GET /sales
   def index
-    @sales = Sale.includes(:titulo, :placa, :motorcycle, :customer).all
+    @sales = Sale.includes(:title, :plate, :motorcycle, :customer).all
 
     render json: @sales
   end

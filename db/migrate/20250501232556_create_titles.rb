@@ -1,8 +1,8 @@
 class CreateTitles < ActiveRecord::Migration[8.0]
   def change
-    create_table :titulos do |t|
-      t.integer :numero_titulo
-      t.string :codigo
+    create_table :titles do |t|
+      t.integer :title_number
+      t.string :password
       t.references :sale, null: false, foreign_key: true
 
       t.timestamps

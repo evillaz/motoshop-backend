@@ -57,14 +57,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_234557) do
     t.index ["sale_id"], name: "index_payments_on_sale_id"
   end
 
-  create_table "placas", force: :cascade do |t|
-    t.string "codigo"
-    t.string "placa"
-    t.decimal "monto", precision: 10, scale: 2, default: "66.8"
+  create_table "plates", force: :cascade do |t|
+    t.string "plate"
+    t.string "pay_code"
+    t.boolean "status", default: false
     t.bigint "sale_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["sale_id"], name: "index_placas_on_sale_id"
+    t.index ["sale_id"], name: "index_plates_on_sale_id"
   end
 
   create_table "sales", force: :cascade do |t|
@@ -74,28 +74,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_234557) do
     t.string "boleta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "titulo_id"
-    t.bigint "placa_id"
+    t.bigint "title_id"
+    t.bigint "plate_id"
     t.index ["dni"], name: "index_sales_on_dni"
     t.index ["factura"], name: "index_sales_on_factura"
-    t.index ["placa_id"], name: "index_sales_on_placa_id"
-    t.index ["titulo_id"], name: "index_sales_on_titulo_id"
+    t.index ["plate_id"], name: "index_sales_on_plate_id"
+    t.index ["title_id"], name: "index_sales_on_title_id"
   end
 
-  create_table "titulos", force: :cascade do |t|
-    t.integer "numero_titulo"
-    t.string "codigo"
+  create_table "titles", force: :cascade do |t|
+    t.integer "title_number"
+    t.string "password"
     t.bigint "sale_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["sale_id"], name: "index_titulos_on_sale_id"
+    t.index ["sale_id"], name: "index_titles_on_sale_id"
   end
 
   add_foreign_key "customers", "sales"
   add_foreign_key "motorcycles", "sales"
   add_foreign_key "payments", "sales"
-  add_foreign_key "placas", "sales"
-  add_foreign_key "sales", "placas"
-  add_foreign_key "sales", "titulos"
-  add_foreign_key "titulos", "sales"
+  add_foreign_key "plates", "sales"
+  add_foreign_key "sales", "plates"
+  add_foreign_key "sales", "titles"
+  add_foreign_key "titles", "sales"
 end
