@@ -4,6 +4,7 @@ class CreatePayments < ActiveRecord::Migration[8.0]
       t.string :transaction_number
       t.decimal :amount, precision: 10, scale: 2
       t.string :method
+      t.date :issue_date
       t.references :sale, null: false, foreign_key: true
 
       t.timestamps

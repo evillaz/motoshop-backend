@@ -3,6 +3,8 @@ class SaleSerializer < ActiveModel::Serializer
 
   has_one :plate
   has_one :title
+  has_one :electronic_receipt
+  has_many :payments
   
   belongs_to :motorcycle
   belongs_to :customer

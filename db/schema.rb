@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_01_234557) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_07_234629) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_234557) do
     t.bigint "sale_id"
     t.index ["dni"], name: "index_customers_on_dni", unique: true
     t.index ["sale_id"], name: "index_customers_on_sale_id"
+  end
+
+  create_table "electronic_receipts", force: :cascade do |t|
+    t.string "receipt_number"
+    t.date "issue_date"
+    t.bigint "sale_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sale_id"], name: "index_electronic_receipts_on_sale_id"
   end
 
   create_table "motorcycles", force: :cascade do |t|
@@ -48,9 +57,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_234557) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.integer "transaction_number"
+    t.string "transaction_number"
     t.decimal "amount", precision: 10, scale: 2
     t.string "method"
+    t.date "issue_date"
     t.bigint "sale_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -92,6 +102,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_234557) do
   end
 
   add_foreign_key "customers", "sales"
+  add_foreign_key "electronic_receipts", "sales"
   add_foreign_key "motorcycles", "sales"
   add_foreign_key "payments", "sales"
   add_foreign_key "plates", "sales"

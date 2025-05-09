@@ -4,5 +4,7 @@ class Sale < ApplicationRecord
   
   has_one :title
   has_one :plate
+  has_one :electronic_receipt
+  has_many :payments
   validates :total_amount, presence: true
 end

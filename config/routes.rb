@@ -13,7 +13,9 @@ Rails.application.routes.draw do
       resources :customers
       resources :sales do
         member do
-          patch :update_boleta
+          patch :update_receipt
+          post :add_payment
+          delete :remove_payment
         end
       end
     end

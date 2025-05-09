@@ -1,8 +1,8 @@
-class Payment < ApplicationRecord
+class ElectronicReceipt < ApplicationRecord
   belongs_to :sale
-  validates :amount, presence: true
-  validates :method, presence: true
-  
+  validates :sale_id, uniqueness: true
+  validates :receipt_number, presence: true
+
   before_create :set_default_issue_date
 
   private
