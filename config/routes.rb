@@ -9,13 +9,17 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
-      resources :motorcycles
+      resources :motorcycles do
+        member do
+          patch :update_attribute
+        end
+      end
       resources :customers
       resources :sales do
         member do
           patch :update_receipt
           post :add_payment
-          delete :remove_payment
+          delete 'remove_payment/:payment_id', action: :remove_payment
         end
       end
     end
