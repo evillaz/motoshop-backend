@@ -20,6 +20,8 @@ Rails.application.routes.draw do
           patch :update_receipt
           post :add_payment
           delete 'remove_payment/:payment_id', action: :remove_payment
+          post :add_title
+          delete 'remove_title/:payment_id', action: :remove_title
         end
       end
     end

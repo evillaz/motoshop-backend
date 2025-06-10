@@ -1,9 +1,9 @@
 class Api::V1::SalesController < ApplicationController
-  before_action :set_sale, only: [:show, :update, :destroy, :update_boleta, :update_receipt, :add_payment, :remove_payment]
+  before_action :set_sale, only: [:show, :update, :destroy, :update_boleta, :update_receipt, :add_payment, :remove_payment, :add_title, :remove_title]
 
   # GET /sales
   def index
-    @sales = Sale.includes(:title, :plate, :motorcycle, :customer).all
+    @sales = Sale.includes(:title, :plate, :motorcycle, :customer, :payments, :electronic_receipt).all
 
     render json: @sales
   end
@@ -81,6 +81,25 @@ class Api::V1::SalesController < ApplicationController
     head :no_content
   end
 
+  # ADD TITLE
+  def add_title
+    title = @sale.payments.build(title_params)
+
+    if payment.save
+      render json: title, status: :created
+    else
+      render json: title.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE TITLE
+  def remove_title
+    title = @sale.payments.find(params[:title_id])
+
+    title.destroy
+    head :no_content
+  end
+
   # DELETE /sales/:id
   def destroy
     @sale.destroy
@@ -105,5 +124,9 @@ class Api::V1::SalesController < ApplicationController
   
   def payment_params
     params.require(:payment).permit(:transaction_number, :amount, :method, :issue_date)
+  end
+
+  def title_params
+    params.require(:title).permit(:title_number, :password)
   end
 end
