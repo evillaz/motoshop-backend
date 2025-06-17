@@ -83,9 +83,9 @@ class Api::V1::SalesController < ApplicationController
 
   # ADD TITLE
   def add_title
-    title = @sale.payments.build(title_params)
-
-    if payment.save
+    title = @sale.build_title(title_params)
+    
+    if title.save
       render json: title, status: :created
     else
       render json: title.errors, status: :unprocessable_entity
@@ -94,10 +94,13 @@ class Api::V1::SalesController < ApplicationController
 
   # DELETE TITLE
   def remove_title
-    title = @sale.payments.find(params[:title_id])
-
-    title.destroy
-    head :no_content
+    title = @sale.title
+    if title&.id == params[:title_id].to_i
+      title.destroy
+      head :no_content
+    else
+      render json: { error: 'Title not found or mismatched' }, status: :not_found
+    end
   end
 
   # DELETE /sales/:id
